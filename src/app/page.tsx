@@ -1,4 +1,32 @@
+import ReactMarkdown, { type Components } from "react-markdown";
 import { supabase } from "@/lib/supabase";
+
+const markdownComponents: Components = {
+  h2: ({ children }) => (
+    <h3 className="mt-4 mb-2 text-base font-semibold text-zinc-900 first:mt-0 dark:text-zinc-50">
+      {children}
+    </h3>
+  ),
+  h3: ({ children }) => (
+    <h4 className="mt-3 mb-1 text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+      {children}
+    </h4>
+  ),
+  p: ({ children }) => (
+    <p className="mb-2 text-sm text-zinc-600 dark:text-zinc-400">{children}</p>
+  ),
+  ul: ({ children }) => (
+    <ul className="mb-2 ml-4 list-disc space-y-1 text-sm text-zinc-600 dark:text-zinc-400">
+      {children}
+    </ul>
+  ),
+  li: ({ children }) => <li>{children}</li>,
+  strong: ({ children }) => (
+    <strong className="font-semibold text-zinc-900 dark:text-zinc-100">
+      {children}
+    </strong>
+  ),
+};
 
 const sources = [
   { title: "Inbox", description: "Gmail & Outlook" },
@@ -48,9 +76,11 @@ export default async function Home() {
             Today&apos;s briefing
           </h2>
           {briefing ? (
-            <p className="mt-2 whitespace-pre-wrap text-sm text-zinc-600 dark:text-zinc-400">
-              {briefing.summary}
-            </p>
+            <div className="mt-2">
+              <ReactMarkdown components={markdownComponents}>
+                {briefing.summary}
+              </ReactMarkdown>
+            </div>
           ) : (
             <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
               No briefing yet for today — check back once your automation runs.
