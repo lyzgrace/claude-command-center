@@ -7,8 +7,19 @@ const sources = [
   { title: "Tasks", description: "Notion tasks" },
 ];
 
+const BRIEFING_TIMEZONE = "America/New_York";
+
+function getTodayDate() {
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: BRIEFING_TIMEZONE,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(new Date());
+}
+
 async function getTodaysBriefing() {
-  const today = new Date().toISOString().slice(0, 10);
+  const today = getTodayDate();
 
   const { data } = await supabase
     .from("daily_briefings")
